@@ -1,12 +1,16 @@
 package camps;
 
+import java.util.HashMap;
+
 import org.openqa.selenium.WebElement;
+
+import com.gargoylesoftware.htmlunit.protocol.about.Handler;
 
 public class FirstClass {
 //we will write test metodes here
 	
-	/*test case T1
-	 * open main site
+	/**test case T1
+	 * open main page
 	 * find all small option buttons
 	 * check that every slide has the same given title and text
 	 * close the site
@@ -31,9 +35,38 @@ public class FirstClass {
 		Thread.sleep(2000);
 		main.close();
 	}
+	/**test case 2
+	 * open main page
+	 * scroll down
+	 * check the text in the images
+	 */
+	
+	public static void t2() throws InterruptedException
+	{
+		HashMap<String, String> titlesAndText=new HashMap<String, String>();
+		titlesAndText.put("Weaver Lake", "There is no better way to spend a day than on the water. Weaver Lake is a medium sized lake, large enough to spend a few days exploring, but not large enough to get lost. Bring your own boat, use the public boat launch, spend a memorable day on the water.");
+		titlesAndText.put("Weaver Lake Group Site", "Enjoy exclusive use of this group site for your family or group gatherings. This site is located at the north east side of Weaver Lake and boasts a wharf, 10 tenting pad sites and a communal fire ring.");
+		titlesAndText.put("Grace Lake", "Enjoy this small but popular camping site located next to Grace Lake. There is even a floating dock to fish from. A nice feature of this recreation site is the designated staging area and parking lot for motorized recreation that accesses the West Harrison Riding Area.");
+		titlesAndText.put("Wolf Lake", "A favorite small group campsite situated next to Wolf Lake. Enjoy fishing off the wharf. There are 3 designated sites with picnic tables, fire rings and an outhouse.");
+		titlesAndText.put("Wood Lake", "A large semi-open site with two camping areas, one on each side of the lake. Access is by gravel road and no power boats are allowed. We have picnic tables and fire rings at every site and outhouses positioned around the property.");
+		titlesAndText.put("Wood Lake Group Site", "This site is a large semi-open site with 6 camping sites. You are given a key for the gate, so you can come and go as you please. There is lots of room for extra vehicles by the campsites.  Access is by gravel road and no power boats are allowed.");
+		titlesAndText.put("Twenty Mile Bay", "The sites are nestled in an old growth forest and is situated on a peninsula with over 1.5 km’s beaches facing North and South on the West shore of Harrison Lake.  We have Picnic tables and fire pits at every site and outhouses positioned around the property.");
+		titlesAndText.put("Chehalis River", "This is a beautiful site situated amongst mature timber. It borders the Chehalis River, which offers excellent steelhead fishing opportunities. There are two smaller sites situated across the road that also border the river. The two smaller sites are used mainly as group sites and for day-use activities.");
+		titlesAndText.put("Chehalis River N. Group Site", "Chehalis River North Group Rec Site is located along the banks of Chehalis River. Access is by paved road. We have Picnic tables and fire pits at every site and outhouses positioned on the property. We offer a beautiful walking trail through the forest that terminates at the river downstream from the campground.");
+		titlesAndText.put("Skwellepil Creek", "Come out and enjoy this freshly restored site. Enjoy the large beautiful lake that is 10 km in length and is located in the Chehalis Valley, west of Harrison Lake. A boat launch is available for those interested in fishing, or exploring the coves and bays along the shoreline.");
+				
+		MainPage main=new MainPage();
+		main.scrollDown();
+		for (String s:titlesAndText.keySet())
+		{
+			if (!main.findTextByCampName(s).contains(titlesAndText.get(s)))
+				System.err.println("wrong text, have this:\n"+main.findTextByCampName(s)+"\nWe need this:\n"+titlesAndText.get(s));
+		}
+		main.close();
+	}
 	
 	public static void main(String[] args) throws InterruptedException
 	{
-		t1();
+		t2();
 	}
 }
