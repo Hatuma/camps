@@ -6,7 +6,10 @@ public class FirstClass {
 //we will write test metodes here
 	
 	/*test case T1
-	 * for now just open and close the web site 
+	 * open main site
+	 * find all small option buttons
+	 * check that every slide has the same given title and text
+	 * close the site
 	 */
 	public static void t1() throws InterruptedException
 	{
