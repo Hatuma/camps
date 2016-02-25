@@ -61,4 +61,10 @@ public class MainPage {
 		return rez;
 	}
 	
+	public ReservationPage openReservation()
+	{
+		driver.findElement(By.linkText("Make A Reservation")).click();
+		return new ReservationPage(driver);
+	}
+	
 }

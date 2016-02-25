@@ -1,10 +1,11 @@
 package camps;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import org.openqa.selenium.WebElement;
-
-import com.gargoylesoftware.htmlunit.protocol.about.Handler;
 
 public class FirstClass {
 //we will write test metodes here
@@ -27,10 +28,10 @@ public class FirstClass {
 			Thread.sleep(2000);
 			if (main.slideTitle().compareTo(title)!=0)
 			{
-				System.err.println("Wrong title!\n title is:\n "+main.slideTitle());
+				System.err.println("t1:Wrong title!\n title is:\n "+main.slideTitle());
 			}
 			if (main.slideText().compareTo(text)!=0)
-				System.err.println("Wrong text!\n text is:\n "+main.slideText());
+				System.err.println("t1:Wrong text!\n text is:\n "+main.slideText());
 		}
 		Thread.sleep(2000);
 		main.close();
@@ -60,13 +61,63 @@ public class FirstClass {
 		for (String s:titlesAndText.keySet())
 		{
 			if (!main.findTextByCampName(s).contains(titlesAndText.get(s)))
-				System.err.println("wrong text, have this:\n"+main.findTextByCampName(s)+"\nWe need this:\n"+titlesAndText.get(s));
+				System.err.println("t2:wrong text, have this:\n"+main.findTextByCampName(s)+"\nWe need this:\n"+titlesAndText.get(s));
 		}
 		main.close();
 	}
 	
+	/** test case 3	
+	 * go to westharrisonreservations.com
+	 * go to Make a Reservations page
+	 * enter Start date 2016, 1, 1
+	 * enter End date 2016, 10, 1
+	 * search for reservation options
+	 * check there is all "long name" camps as option
+	 * check all short name camps (their name are part in other camp names)
+	 */
+	
+	@SuppressWarnings("deprecation")
+	public static void t3()
+	{
+		MainPage main=new MainPage();
+		ReservationPage rp=main.openReservation();	
+		rp.setStartDate(new Date(2016, 1, 1));
+		rp.setEndDate(new Date(2016, 10, 1));
+		rp.submitSearch();
+		List<String> camps=new ArrayList<>();
+		camps.add("Weaver Lake Group Site");
+		camps.add("Grace Lake");
+		camps.add("Wolf Lake");
+		camps.add("Wood Lake Group Site");
+		camps.add("Twenty Mile Bay");
+		camps.add("Chehalis River North Group Site");
+		camps.add("Skwellepil Creek");
+		for(String s:camps)
+		{
+			if (!rp.checkCamp(s))
+			{
+				System.err.println("t3:camp "+s+" not found!");
+			}
+		}
+		if (!rp.checkShortCamp("Weaver Lake", "Weaver Lake Group Site"))
+		{
+			System.err.println("t3:camp Weaver Lake not found!");
+		}
+		if (!rp.checkShortCamp("Wood Lake", "Wood Lake Group Site"))
+		{
+			System.err.println("t3:camp Wood Lake not found!");
+		}
+		if (!rp.checkShortCamp("Chehalis River", "Chehalis River North Group Site"))
+		{
+			System.err.println("t3:camp Chehalis River not found!");
+		}
+		rp.close();
+	}
+	
 	public static void main(String[] args) throws InterruptedException
 	{
+		t1();
 		t2();
+		t3();
 	}
 }
