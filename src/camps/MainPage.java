@@ -67,4 +67,14 @@ public class MainPage {
 		return new ReservationPage(driver);
 	}
 	
+	public WebElement notActivOptionButton()
+	{
+		return driver.findElement(By.className("nivo-control"));
+	}
+	
+	public boolean checkActiveOptionButton(String rel)
+	{
+		return driver.findElement(By.xpath("//a[@rel='"+rel+"']")).getAttribute("class").compareTo("nivo-control active")==0;
+	}
+	
 }

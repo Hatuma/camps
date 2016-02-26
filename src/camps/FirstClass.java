@@ -114,10 +114,33 @@ public class FirstClass {
 		rp.close();
 	}
 	
+	/** test case 4
+	 * 	go to westharrisonreservations.com
+	 *  chose a non active option button (Click on an empty circle at the bottom of the slideshow )
+	 *  verify the button will be active in 0.5 sec
+	 */
+	public static void t4()
+	{
+		MainPage main=new MainPage();
+		WebElement button=main.notActivOptionButton();
+		button.click();
+		String rel=button.getAttribute("rel");
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (!main.checkActiveOptionButton(rel))
+			System.err.println("t4: button not active");
+		main.close();
+	}
+	
 	public static void main(String[] args) throws InterruptedException
 	{
-		t1();
-		t2();
-		t3();
+		//t1();
+		//t2();
+		//t3();
+		t4();
 	}
 }
