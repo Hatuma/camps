@@ -77,4 +77,31 @@ public class MainPage {
 		return driver.findElement(By.xpath("//a[@rel='"+rel+"']")).getAttribute("class").compareTo("nivo-control active")==0;
 	}
 	
+	public void up()
+	{
+		for (int i=0; i<10;i++)
+		{
+			try
+			{
+				driver.findElement(By.id("toTop")).click();
+				return;
+			}
+			catch(Exception e)
+			{
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	public int readPosition()
+	{
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		Long value = (Long) executor.executeScript("return window.scrollY;");
+		return value.intValue();
+	}
 }

@@ -10,13 +10,23 @@ import org.openqa.selenium.WebElement;
 public class FirstClass {
 //we will write test metodes here
 	
+	public static void sleep(int time)
+	{
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**test case T1
 	 * open main page
 	 * find all small option buttons
 	 * check that every slide has the same given title and text
 	 * close the site
 	 */
-	public static void t1() throws InterruptedException
+	public static void t1()
 	{
 		String title="Recreation Sites & Trail BC";
 		String text="Through Rec.SitesandTrails.BC we offer a respectful, family oriented wilderness camping experience, focused on improving all aspects of the customer’s enjoyment.";
@@ -25,7 +35,7 @@ public class FirstClass {
 		for(WebElement button:main.getSmallButtons())
 		{
 			button.click();
-			Thread.sleep(2000);
+			sleep(500);
 			if (main.slideTitle().compareTo(title)!=0)
 			{
 				System.err.println("t1:Wrong title!\n title is:\n "+main.slideTitle());
@@ -33,7 +43,7 @@ public class FirstClass {
 			if (main.slideText().compareTo(text)!=0)
 				System.err.println("t1:Wrong text!\n text is:\n "+main.slideText());
 		}
-		Thread.sleep(2000);
+		//sleep(2000);
 		main.close();
 	}
 	/**test case 2
@@ -42,7 +52,7 @@ public class FirstClass {
 	 * check the text in the images
 	 */
 	
-	public static void t2() throws InterruptedException
+	public static void t2()
 	{
 		HashMap<String, String> titlesAndText=new HashMap<String, String>();
 		titlesAndText.put("Weaver Lake", "There is no better way to spend a day than on the water. Weaver Lake is a medium sized lake, large enough to spend a few days exploring, but not large enough to get lost. Bring your own boat, use the public boat launch, spend a memorable day on the water.");
@@ -125,22 +135,44 @@ public class FirstClass {
 		WebElement button=main.notActivOptionButton();
 		button.click();
 		String rel=button.getAttribute("rel");
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		sleep(500);
 		if (!main.checkActiveOptionButton(rel))
 			System.err.println("t4: button not active");
 		main.close();
 	}
+	/**	test case 5
+	 *  go to westharrisonreservations.com
+	 *  scroll down
+	 *  return back up with the little button on the right
+	 */
 	
-	public static void main(String[] args) throws InterruptedException
+	public static void t5()
 	{
-		//t1();
-		//t2();
-		//t3();
+		MainPage main=new MainPage();
+		main.scrollDown();
+		main.up();
+		int poz1=main.readPosition();
+		sleep(10);
+		int poz2=main.readPosition();
+		while (poz1!=poz2)
+		{
+			sleep(10);
+			poz1=poz2;
+			poz2=main.readPosition();
+		}
+		if (poz2!=0)
+		{
+			System.err.println("t5: didn't scrolled up, position="+poz2);
+		}
+		main.close();
+	}
+	
+	public static void main(String[] args)
+	{
+		t1();
+		t2();
+		t3();
 		t4();
+		t5();
 	}
 }
