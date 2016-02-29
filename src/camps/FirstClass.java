@@ -152,11 +152,11 @@ public class FirstClass {
 		main.scrollDown();
 		main.up();
 		int poz1=main.readPosition();
-		sleep(10);
+		sleep(50);
 		int poz2=main.readPosition();
 		while (poz1!=poz2)
 		{
-			sleep(10);
+			sleep(50);
 			poz1=poz2;
 			poz2=main.readPosition();
 		}
@@ -167,6 +167,43 @@ public class FirstClass {
 		main.close();
 	}
 	
+	/** test case 6
+	 * go to westharrisonreservations.com
+	 * scroll the slides with the small button on the right from the first to the last, then one more to return back to the first
+	 * same as the step 2, just from right to left
+	 */
+	
+	public static void t6()
+	{
+		MainPage main=new MainPage();
+		int n=main.getSmallButtons().size();
+		int current=Integer.parseInt(main.getActiveSmallButton().getAttribute("rel"));
+		for (int i=0;i<n;i++)
+		{
+			main.rightButtonClick();;
+			sleep(2000);
+			current+=1;
+			current%=n;
+			if (!main.checkActiveOptionButton(""+current))
+			{
+				System.err.println("t6: the slide show didn't got to the left to slide "+current);
+			}
+		}
+		for (int i=0;i<n;i++)
+		{
+			main.leftButtonClick();
+			sleep(2000);
+			current+=n-1;
+			current%=n;
+			if (!main.checkActiveOptionButton(""+current))
+			{
+				System.err.println("t6: the slide show didn't got to the right to slide "+current);
+			}
+		}
+		main.close();
+	}
+	
+	
 	public static void main(String[] args)
 	{
 		t1();
@@ -174,5 +211,6 @@ public class FirstClass {
 		t3();
 		t4();
 		t5();
+		t6();
 	}
 }

@@ -28,6 +28,11 @@ public class MainPage {
 		return driver.findElements(By.className("nivo-control"));
 	}
 	
+	public WebElement getActiveSmallButton()
+	{
+		return driver.findElement(By.xpath("//a[contains(@class,'active')]"));
+	}
+	
 	public WebElement rightButton()
 	{
 		return driver.findElement(By.className("nivo-nextNav"));
@@ -36,6 +41,18 @@ public class MainPage {
 	public WebElement leftButton()
 	{
 		return driver.findElement(By.className("nivo-prevNav"));
+	}
+	
+	public void rightButtonClick()
+	{
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		js.executeScript("arguments[0].click();", rightButton());
+	}
+	
+	public void leftButtonClick()
+	{
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		js.executeScript("arguments[0].click();", leftButton());
 	}
 	
 	public String slideTitle()
