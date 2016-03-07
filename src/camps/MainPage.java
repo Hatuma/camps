@@ -121,4 +121,18 @@ public class MainPage {
 		Long value = (Long) executor.executeScript("return window.scrollY;");
 		return value.intValue();
 	}
+	
+	public List<WebElement> getReadMeButtons()
+	{
+		return driver.findElements(By.xpath("//div[@class='columnmore']/a"));
+	}
+	
+	public CampPage openCampPage(WebElement readMeButton,String campName)
+	{
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		js.executeScript("arguments[0].click();", readMeButton);
+		return new CampPage(driver,campName);
+	}
+	
+
 }

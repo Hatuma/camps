@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class FirstClass {
@@ -202,6 +203,46 @@ public class FirstClass {
 		}
 		main.close();
 	}
+	//start 16.03.07 8:15
+	//finished 16.03.07 11:00
+	//active programming time 1:45
+	/**test case 7
+	 * go to main page
+	 * scroll down
+	 * find read more buttons
+	 * go to every page and check
+	 * -page h1 title is equal to the camp for the read more 
+	 * -slide show is present
+	 * -navigation menu is present
+	 */
+	public static void t7()
+	{
+		MainPage main=new MainPage();
+		main.scrollDown();
+		CampPage camp;
+		List<WebElement>buttons=main.getReadMeButtons();
+		for(int i=0;i<buttons.size();i++)
+		{
+			buttons=main.getReadMeButtons();
+			WebElement currentReadMe=buttons.get(i);
+			camp=main.openCampPage(currentReadMe,currentReadMe.findElement(By.xpath("//a[@href='"+currentReadMe.getAttribute("href")+"']/../../a/h3")).getText());
+			if (!camp.checkName())
+			{
+				System.err.println("t7: wrong camp page, need: "+camp.campName+" found: "+camp.getPageTitle());
+			}
+			if (!camp.checkSlideShow())
+			{
+				System.err.println("t7: slideshow missin on page "+camp.campName);
+			}
+			if (!camp.checkNavigationMenu())
+			{
+				System.err.println("t7: navigation menu missin on page "+camp.campName);
+			}
+			camp.backToMain();
+			main.scrollDown();
+		}
+		main.close();
+	}
 	
 	
 	public static void main(String[] args)
@@ -212,5 +253,6 @@ public class FirstClass {
 		t4();
 		t5();
 		t6();
+		t7();
 	}
 }
