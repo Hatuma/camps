@@ -244,15 +244,135 @@ public class FirstClass {
 		main.close();
 	}
 	
+		//start 16.03.07 11:45
+		//finished 16.03.07 
+		//active programming time 
+	/*
+	 * 
+	 */
+	public static void t8()
+	{
+		MainPage main=new MainPage();
+		main.scrollDown();
+		CampPage camp;
+		List<WebElement>buttons=main.getReadMeButtons();
+		for(int i=0;i<buttons.size();i++)
+		{
+			buttons=main.getReadMeButtons();
+			WebElement currentReadMe=buttons.get(i);
+			camp=main.openCampPage(currentReadMe,currentReadMe.findElement(By.xpath("//a[@href='"+currentReadMe.getAttribute("href")+"']/../../a/h3")).getText());
+			
+			try{
+			camp.goToOverview();
+			main.scrollDown();
+			if (!camp.isItOverviewPage())
+			{
+				System.err.println("t8: didnt found overview page for camp "+camp.campName);
+			}
+			}catch(Exception e)
+			{
+				System.err.println("t8: didnt found overview page for camp "+camp.campName);
+			}
+			
+			try{
+			ReservationPage respage=camp.goToReservation();
+			if (!respage.isItReservationPage())
+			{
+				System.err.println("t8: reservation page not found for camp "+camp.campName);
+			}
+			main=respage.backToMain();
+			buttons=main.getReadMeButtons();
+			currentReadMe=buttons.get(i);
+			main.scrollDown();
+			camp=main.openCampPage(currentReadMe,currentReadMe.findElement(By.xpath("//a[@href='"+currentReadMe.getAttribute("href")+"']/../../a/h3")).getText());
+			}catch(Exception e)
+			{
+				System.err.println("t8: reservation page not found for camp "+camp.campName);
+			}
+	
+			try{
+			camp.goToCampsites();
+			main.scrollDown();
+			if (camp.isItCampsitesPage());
+			{
+				System.err.println("t8: didnt found campsites page for camp "+camp.campName);
+			}
+			}catch(Exception e)
+			{
+				System.err.println("t8: didnt found campsites page for camp "+camp.campName);
+			}
+
+			try{
+			camp.goToMap();
+			if (camp.isItMapPage())
+			{
+				System.err.println("t8: didnt found map page for camp "+camp.campName);
+			}
+			}catch(Exception e)
+			{
+				System.err.println("t8: didnt found map page for camp "+camp.campName);
+			}
+			
+			try{
+			camp.goToDrivingDir();
+			if (camp.isItDrivingDir())
+			{
+				System.err.println("t8: didnt found driving directions page for camp "+camp.campName);
+			}
+			}catch(Exception e)
+			{
+				System.err.println("t8: didnt found driving directions page for camp "+camp.campName);
+			}
+			
+			try{
+			camp.goToWeather();
+			if (!camp.isItWeatherPage())
+			{
+				System.err.println("t8: didnt found weather page for camp "+camp.campName);
+			}
+			}catch(Exception e)
+			{
+				System.err.println("t8: didnt found weather page for camp "+camp.campName);
+			}
+			
+			try{
+			camp.goToContactUs();
+			if (!camp.isItContactUs())
+			{
+				System.err.println("t8: didnt found contact us page for camp "+camp.campName);
+			}
+			}catch(Exception e)
+			{
+				System.err.println("t8: didnt found contact us page for camp "+camp.campName);
+			}
+			
+			try{
+			camp.goToDrivingDir();
+			if (camp.isItGuidelines())
+			{
+				System.err.println("t8: didnt found Guidelines page for camp "+camp.campName);
+			}
+			}catch(Exception e)
+			{
+				System.err.println("t8: didnt found Guidelines page for camp "+camp.campName);
+			}
+
+			main=camp.backToMain();
+		}
+		main.close();
+	}
+	
+	
 	
 	public static void main(String[] args)
 	{
-		t1();
+		/*t1();
 		t2();
 		t3();
 		t4();
 		t5();
 		t6();
-		t7();
+		t7();*/
+		t8();
 	}
 }

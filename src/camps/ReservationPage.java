@@ -17,6 +17,11 @@ public class ReservationPage {
 		this.driver=driver;
 	}
 	
+	public boolean isItReservationPage()
+	{
+		return driver.findElement(By.className("entry-title")).getText().compareTo("Make A Reservation")==0;
+	}
+	
 	@SuppressWarnings("deprecation")
 	public void setStartDate(Date date)
 	{
@@ -103,6 +108,12 @@ public class ReservationPage {
 	public void close()
 	{
 		driver.quit();
+	}
+	
+	public MainPage backToMain()
+	{
+		driver.findElement(By.linkText("Home")).click();
+		return new MainPage(driver);
 	}
 	
 }

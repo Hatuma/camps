@@ -18,6 +18,11 @@ public class MainPage {
 		driver.get("http://westharrisonreservations.com/");
 	}
 	
+	public MainPage(WebDriver driver) {
+		super();
+		this.driver = driver;
+	}
+	
 	public void close()
 	{
 		driver.quit();

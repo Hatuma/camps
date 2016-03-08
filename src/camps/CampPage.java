@@ -1,7 +1,12 @@
 package camps;
 
+import java.util.Date;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Sleeper;
 
 public class CampPage {
 
@@ -13,9 +18,10 @@ public class CampPage {
 		this.campName=campName;
 	}
 	
-	public void backToMain()
+	public MainPage backToMain()
 	{
 		driver.findElement(By.linkText("Home")).click();
+		return new MainPage(driver);
 	}
 	
 	public String getPageTitle()
@@ -39,5 +45,136 @@ public class CampPage {
 	public boolean checkNavigationMenu()
 	{
 		return driver.findElements(By.id("navigation-menu")).size()==1;
+	}
+	
+	public void goToOverview()
+	{
+		driver.findElement(By.id("goto_overview")).click();
+	}
+	
+	public ReservationPage goToReservation()
+	{
+		driver.findElement(By.id("goto_reserve")).click();
+		return new ReservationPage(driver);
+	}
+	
+	public void goToCampsites()
+	{
+		driver.findElement(By.id("goto_list_of_campsites")).click();
+	}
+	
+	public void goToMap()
+	{
+		driver.findElement(By.id("goto_map_of_campground")).click();
+	}
+	
+	public void goToDrivingDir()
+	{
+		driver.findElement(By.id("goto_driving_directions")).click();
+	}
+	
+	public void goToWeather()
+	{
+		driver.findElement(By.id("goto_weather")).click();
+	}
+	
+	public void goToContactUs()
+	{
+		driver.findElement(By.id("goto_contactform")).click();
+	}
+	
+	public void goToGuidlines()
+	{
+		driver.findElement(By.id("goto_guidlines")).click();
+	}
+	
+	public boolean isItOverviewPage()
+	{
+		try
+		{
+			return driver.findElement(By.xpath("//h2[text()[contains(.,'Overview')]]"))!=null||driver.findElement(By.xpath("//h3[text()[contains(.,'Overview')]]"))!=null;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+	}
+	
+	public boolean isItCampsitesPage()
+	{
+		try
+		{
+			return driver.findElement(By.xpath("//h3[text()[contains(.,'Campsite')]]"))!=null||driver.findElement(By.xpath("//h2[text()[contains(.,'Campsite')]]"))!=null;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+		
+	}
+	
+	public boolean isItMapPage()
+	{
+		try
+		{
+			return driver.findElement(By.xpath("//h2[@text='Map of Campground']"))!=null;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+		
+	}
+	
+	public boolean isItDrivingDir()
+	{
+		try
+		{
+			return driver.findElement(By.xpath("//h2[@text='Driving Directions']"))!=null;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+		
+	}
+	
+	public boolean isItWeatherPage()
+	{
+		try
+		{
+			return driver.findElement(By.id("weather"))!=null;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+		
+	}
+
+	public boolean isItContactUs() 
+	{
+		try
+		{
+			return driver.findElement(By.id("contact_form")).getText().contains("If you have any questions or suggestions, we ");
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+		
+	}
+
+	public boolean isItGuidelines()
+	{
+		try
+		{
+			return driver.findElement(By.xpath("//h2[@text='Campground Guidelines ']"))!=null;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+		
 	}
 }
