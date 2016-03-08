@@ -1,12 +1,7 @@
 package camps;
 
-import java.util.Date;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Sleeper;
 
 public class CampPage {
 
@@ -92,11 +87,19 @@ public class CampPage {
 	{
 		try
 		{
-			return driver.findElement(By.xpath("//h2[text()[contains(.,'Overview')]]"))!=null||driver.findElement(By.xpath("//h3[text()[contains(.,'Overview')]]"))!=null;
+			return driver.findElement(By.xpath("//h2[text()='Overview']")).isDisplayed();
+			
 		}
 		catch(Exception e)
 		{
-			return false;
+			try
+			{
+				return driver.findElement(By.xpath("//h1[text()='Overview']")).isDisplayed();
+			}
+			catch (Exception e2)
+			{
+				return false;
+			}
 		}
 	}
 	
@@ -104,20 +107,27 @@ public class CampPage {
 	{
 		try
 		{
-			return driver.findElement(By.xpath("//h3[text()[contains(.,'Campsite')]]"))!=null||driver.findElement(By.xpath("//h2[text()[contains(.,'Campsite')]]"))!=null;
+			driver.findElement(By.xpath("//h3[contains(text(),'Campsite')]"));	
 		}
 		catch(Exception e)
 		{
-			return false;
+			try
+			{
+				driver.findElement(By.xpath("//h2[contains(text(),'Campsite')]"));
+			}
+			catch (Exception e2)
+			{
+				return false;
+			}
 		}
-		
+		return true;
 	}
 	
 	public boolean isItMapPage()
 	{
 		try
 		{
-			return driver.findElement(By.xpath("//h2[@text='Map of Campground']"))!=null;
+			return driver.findElement(By.xpath("//h2[text()='Map of Campground']"))!=null;
 		}
 		catch(Exception e)
 		{
@@ -130,7 +140,7 @@ public class CampPage {
 	{
 		try
 		{
-			return driver.findElement(By.xpath("//h2[@text='Driving Directions']"))!=null;
+			return driver.findElement(By.xpath("//h2[text()='Driving Directions']"))!=null;
 		}
 		catch(Exception e)
 		{
@@ -169,7 +179,7 @@ public class CampPage {
 	{
 		try
 		{
-			return driver.findElement(By.xpath("//h2[@text='Campground Guidelines ']"))!=null;
+			return driver.findElement(By.xpath("//h2[text()='Campground Guidelines ']"))!=null;
 		}
 		catch(Exception e)
 		{

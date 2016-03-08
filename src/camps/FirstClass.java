@@ -293,7 +293,7 @@ public class FirstClass {
 			try{
 			camp.goToCampsites();
 			main.scrollDown();
-			if (camp.isItCampsitesPage());
+			if (!camp.isItCampsitesPage())
 			{
 				System.err.println("t8: didnt found campsites page for camp "+camp.campName);
 			}
@@ -304,7 +304,7 @@ public class FirstClass {
 
 			try{
 			camp.goToMap();
-			if (camp.isItMapPage())
+			if (!camp.isItMapPage())
 			{
 				System.err.println("t8: didnt found map page for camp "+camp.campName);
 			}
@@ -315,7 +315,7 @@ public class FirstClass {
 			
 			try{
 			camp.goToDrivingDir();
-			if (camp.isItDrivingDir())
+			if (!camp.isItDrivingDir())
 			{
 				System.err.println("t8: didnt found driving directions page for camp "+camp.campName);
 			}
@@ -348,7 +348,7 @@ public class FirstClass {
 			
 			try{
 			camp.goToDrivingDir();
-			if (camp.isItGuidelines())
+			if (!camp.isItGuidelines())
 			{
 				System.err.println("t8: didnt found Guidelines page for camp "+camp.campName);
 			}
@@ -374,5 +374,6 @@ public class FirstClass {
 		t6();
 		t7();*/
 		t8();
+		
 	}
 }
