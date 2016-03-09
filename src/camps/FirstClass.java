@@ -245,10 +245,14 @@ public class FirstClass {
 	}
 	
 		//start 16.03.07 11:45
-		//finished 16.03.07 
-		//active programming time 
-	/*
-	 * 
+		//finished 16.03.08 11:00
+		//active programming time 4:00
+	/* test case 8
+	 * Go to westharrisonreservations.com 
+	 * Go to Chehalis River 
+	 * Click on every horizontal menu item 
+	 * Verify that the content of the page changes accordingly to selected menu item 
+	 * Verify to all other campgrounds also
 	 */
 	public static void t8()
 	{
@@ -362,7 +366,58 @@ public class FirstClass {
 		main.close();
 	}
 	
-	
+			//start 16.03.09 9:10
+			//finished 16.03.09 10:10
+			//active programming time 1:00 
+		/* test case 9
+		 * Go to westharrisonreservations.com 
+		 * Go to Chehalis River 
+		 * Click on Campites horizontal menu 
+		 * Click on the first campsite's picture 
+		 * Verify that the popup is present with the pictures 
+		 * Verify to all other campgrounds also
+		 */
+	public static void t9()
+	{
+		MainPage main=new MainPage();
+		main.scrollDown();
+		CampPage camp;
+		List<WebElement>buttons=main.getReadMeButtons();
+		for(int i=0;i<buttons.size();i++)
+		{
+			buttons=main.getReadMeButtons();
+			WebElement currentReadMe=buttons.get(i);
+			camp=main.openCampPage(currentReadMe,currentReadMe.findElement(By.xpath("//a[@href='"+currentReadMe.getAttribute("href")+"']/../../a/h3")).getText());
+			try{
+				camp.goToCampsites();
+				main.scrollDown();		
+				if (!camp.isItCampsitesPage())
+				{
+					System.err.println("t9: didnt found campsite on campsites page for camp "+camp.campName);
+				}
+				else
+				{
+					try
+					{
+						camp.clickOnFirstCamp();
+						if (!camp.isItPopUp())
+						{
+							System.err.println("t8: didnt found popup for the first campsite on campsites page for camp "+camp.campName);
+						}
+					}catch(Exception e)
+					{
+						System.err.println("t9: didnt found first camp on campsites page for camp "+camp.campName);
+					}
+					
+				}
+			}catch(Exception e)
+			{
+				System.err.println("t9: didnt found campsites page for camp "+camp.campName);
+			}
+			main=camp.backToMain();
+		}
+		main.close();
+	}
 	
 	public static void main(String[] args)
 	{
@@ -372,8 +427,9 @@ public class FirstClass {
 		t4();
 		t5();
 		t6();
-		t7();*/
-		t8();
+		t7();
+		t8();*/
+		t9();
 		
 	}
 }

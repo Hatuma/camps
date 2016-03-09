@@ -1,7 +1,9 @@
 package camps;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class CampPage {
 
@@ -15,7 +17,9 @@ public class CampPage {
 	
 	public MainPage backToMain()
 	{
-		driver.findElement(By.linkText("Home")).click();
+		WebElement element=driver.findElement(By.linkText("Home"));
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		js.executeScript("arguments[0].click();", element);	
 		return new MainPage(driver);
 	}
 	
@@ -185,6 +189,39 @@ public class CampPage {
 		{
 			return false;
 		}
+		
+	}
+	
+	public void clickOnFirstCamp()
+	{
+		WebElement campsite=null;
+		try
+		{
+			campsite=driver.findElement(By.xpath("//h3[contains(text(),'Campsite')]"));	
+		}
+		catch(Exception e)
+		{
+			try
+			{
+				campsite=driver.findElement(By.xpath("//h2[contains(text(),'Campsite')]"));
+			}
+			catch (Exception e2)
+			{
+			}
+		}
+		campsite.findElement(By.xpath("..//img")).click();;
+	}
+	public boolean isItPopUp()
+	{
+		try
+		{
+			driver.findElement(By.id("cboxLoadedContent"));
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+		return true;
 		
 	}
 }
