@@ -1,10 +1,13 @@
 package camps;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -27,12 +30,14 @@ public class FirstClass {
 	 * check that every slide has the same given title and text
 	 * close the site
 	 */
-	public static void t1()
+	@Test
+	public void t1()
 	{
+		boolean ok=true;
 		String title="Recreation Sites & Trail BC";
-		String text="Through Rec.SitesandTrails.BC we offer a respectful, family oriented wilderness camping experience, focused on improving all aspects of the customer’s enjoyment.";
-		
+		String text="Through Rec.SitesandTrails.BC we offer a respectful, family oriented wilderness camping experience, focused on improving all aspects of the customer’s enjoyment.";		
 		MainPage main=new MainPage();
+		
 		for(WebElement button:main.getSmallButtons())
 		{
 			button.click();
@@ -40,21 +45,26 @@ public class FirstClass {
 			if (main.slideTitle().compareTo(title)!=0)
 			{
 				System.err.println("t1:Wrong title!\n title is:\n "+main.slideTitle());
+				ok=false;
 			}
 			if (main.slideText().compareTo(text)!=0)
+			{
 				System.err.println("t1:Wrong text!\n text is:\n "+main.slideText());
+				ok=false;
+			}
 		}
-		//sleep(2000);
 		main.close();
+		assertEquals(ok,true);
 	}
 	/**test case 2
 	 * open main page
 	 * scroll down
 	 * check the text in the images
 	 */
-	
-	public static void t2()
+	@Test
+	public void t2()
 	{
+		boolean ok=true;
 		HashMap<String, String> titlesAndText=new HashMap<String, String>();
 		titlesAndText.put("Weaver Lake", "There is no better way to spend a day than on the water. Weaver Lake is a medium sized lake, large enough to spend a few days exploring, but not large enough to get lost. Bring your own boat, use the public boat launch, spend a memorable day on the water.");
 		titlesAndText.put("Weaver Lake Group Site", "Enjoy exclusive use of this group site for your family or group gatherings. This site is located at the north east side of Weaver Lake and boasts a wharf, 10 tenting pad sites and a communal fire ring.");
@@ -72,9 +82,13 @@ public class FirstClass {
 		for (String s:titlesAndText.keySet())
 		{
 			if (!main.findTextByCampName(s).contains(titlesAndText.get(s)))
+			{
 				System.err.println("t2:wrong text, have this:\n"+main.findTextByCampName(s)+"\nWe need this:\n"+titlesAndText.get(s));
+				ok=false;
+			}
 		}
 		main.close();
+		assertEquals(ok,true);
 	}
 	
 	/** test case 3	
@@ -86,10 +100,11 @@ public class FirstClass {
 	 * check there is all "long name" camps as option
 	 * check all short name camps (their name are part in other camp names)
 	 */
-	
+	@Test
 	@SuppressWarnings("deprecation")
-	public static void t3()
+	public void t3()
 	{
+		boolean ok=true;
 		MainPage main=new MainPage();
 		ReservationPage rp=main.openReservation();	
 		rp.setStartDate(new Date(2016, 1, 1));
@@ -108,21 +123,26 @@ public class FirstClass {
 			if (!rp.checkCamp(s))
 			{
 				System.err.println("t3:camp "+s+" not found!");
+				ok=false;
 			}
 		}
 		if (!rp.checkShortCamp("Weaver Lake", "Weaver Lake Group Site"))
 		{
 			System.err.println("t3:camp Weaver Lake not found!");
+			ok=false;
 		}
 		if (!rp.checkShortCamp("Wood Lake", "Wood Lake Group Site"))
 		{
 			System.err.println("t3:camp Wood Lake not found!");
+			ok=false;
 		}
 		if (!rp.checkShortCamp("Chehalis River", "Chehalis River North Group Site"))
 		{
 			System.err.println("t3:camp Chehalis River not found!");
+			ok=false;
 		}
 		rp.close();
+		assertEquals(ok,true);
 	}
 	
 	/** test case 4
@@ -130,25 +150,32 @@ public class FirstClass {
 	 *  chose a non active option button (Click on an empty circle at the bottom of the slideshow )
 	 *  verify the button will be active in 0.5 sec
 	 */
-	public static void t4()
+	@Test
+	public void t4()
 	{
+		boolean ok=true;
 		MainPage main=new MainPage();
 		WebElement button=main.notActivOptionButton();
 		button.click();
 		String rel=button.getAttribute("rel");
 		sleep(500);
 		if (!main.checkActiveOptionButton(rel))
+		{
 			System.err.println("t4: button not active");
+			ok=false;
+		}
 		main.close();
+		assertEquals(ok,true);
 	}
 	/**	test case 5
 	 *  go to westharrisonreservations.com
 	 *  scroll down
 	 *  return back up with the little button on the right
 	 */
-	
-	public static void t5()
+	@Test
+	public void t5()
 	{
+		boolean ok=true;
 		MainPage main=new MainPage();
 		main.scrollDown();
 		main.up();
@@ -164,8 +191,10 @@ public class FirstClass {
 		if (poz2!=0)
 		{
 			System.err.println("t5: didn't scrolled up, position="+poz2);
+			ok=false;
 		}
 		main.close();
+		assertEquals(ok,true);
 	}
 	
 	/** test case 6
@@ -173,9 +202,10 @@ public class FirstClass {
 	 * scroll the slides with the small button on the right from the first to the last, then one more to return back to the first
 	 * same as the step 2, just from right to left
 	 */
-	
-	public static void t6()
+	@Test
+	public void t6()
 	{
+		boolean ok=true;
 		MainPage main=new MainPage();
 		int n=main.getSmallButtons().size();
 		int current=Integer.parseInt(main.getActiveSmallButton().getAttribute("rel"));
@@ -188,6 +218,7 @@ public class FirstClass {
 			if (!main.checkActiveOptionButton(""+current))
 			{
 				System.err.println("t6: the slide show didn't got to the left to slide "+current);
+				ok=false;
 			}
 		}
 		for (int i=0;i<n;i++)
@@ -199,9 +230,11 @@ public class FirstClass {
 			if (!main.checkActiveOptionButton(""+current))
 			{
 				System.err.println("t6: the slide show didn't got to the right to slide "+current);
+				ok=false;
 			}
 		}
 		main.close();
+		assertEquals(ok,true);
 	}
 	//start 16.03.07 8:15
 	//finished 16.03.07 11:00
@@ -215,8 +248,10 @@ public class FirstClass {
 	 * -slide show is present
 	 * -navigation menu is present
 	 */
-	public static void t7()
+	@Test
+	public void t7()
 	{
+		boolean ok=true;
 		MainPage main=new MainPage();
 		main.scrollDown();
 		CampPage camp;
@@ -229,19 +264,23 @@ public class FirstClass {
 			if (!camp.checkName())
 			{
 				System.err.println("t7: wrong camp page, need: "+camp.campName+" found: "+camp.getPageTitle());
+				ok=false;
 			}
 			if (!camp.checkSlideShow())
 			{
 				System.err.println("t7: slideshow missin on page "+camp.campName);
+				ok=false;
 			}
 			if (!camp.checkNavigationMenu())
 			{
 				System.err.println("t7: navigation menu missin on page "+camp.campName);
+				ok=false;
 			}
 			camp.backToMain();
 			main.scrollDown();
 		}
 		main.close();
+		assertEquals(ok,true);
 	}
 	
 		//start 16.03.07 11:45
@@ -254,8 +293,10 @@ public class FirstClass {
 	 * Verify that the content of the page changes accordingly to selected menu item 
 	 * Verify to all other campgrounds also
 	 */
-	public static void t8()
+	@Test
+	public void t8()
 	{
+		boolean ok=true;
 		MainPage main=new MainPage();
 		main.scrollDown();
 		CampPage camp;
@@ -272,10 +313,12 @@ public class FirstClass {
 			if (!camp.isItOverviewPage())
 			{
 				System.err.println("t8: didnt found overview page for camp "+camp.campName);
+				ok=false;
 			}
 			}catch(Exception e)
 			{
 				System.err.println("t8: didnt found overview page for camp "+camp.campName);
+				ok=false;
 			}
 			
 			try{
@@ -283,6 +326,7 @@ public class FirstClass {
 			if (!respage.isItReservationPage())
 			{
 				System.err.println("t8: reservation page not found for camp "+camp.campName);
+				ok=false;
 			}
 			main=respage.backToMain();
 			buttons=main.getReadMeButtons();
@@ -292,6 +336,7 @@ public class FirstClass {
 			}catch(Exception e)
 			{
 				System.err.println("t8: reservation page not found for camp "+camp.campName);
+				ok=false;
 			}
 	
 			try{
@@ -300,10 +345,12 @@ public class FirstClass {
 			if (!camp.isItCampsitesPage())
 			{
 				System.err.println("t8: didnt found campsites page for camp "+camp.campName);
+				ok=false;
 			}
 			}catch(Exception e)
 			{
 				System.err.println("t8: didnt found campsites page for camp "+camp.campName);
+				ok=false;
 			}
 
 			try{
@@ -311,10 +358,12 @@ public class FirstClass {
 			if (!camp.isItMapPage())
 			{
 				System.err.println("t8: didnt found map page for camp "+camp.campName);
+				ok=false;
 			}
 			}catch(Exception e)
 			{
 				System.err.println("t8: didnt found map page for camp "+camp.campName);
+				ok=false;
 			}
 			
 			try{
@@ -322,10 +371,12 @@ public class FirstClass {
 			if (!camp.isItDrivingDir())
 			{
 				System.err.println("t8: didnt found driving directions page for camp "+camp.campName);
+				ok=false;
 			}
 			}catch(Exception e)
 			{
 				System.err.println("t8: didnt found driving directions page for camp "+camp.campName);
+				ok=false;
 			}
 			
 			try{
@@ -333,10 +384,12 @@ public class FirstClass {
 			if (!camp.isItWeatherPage())
 			{
 				System.err.println("t8: didnt found weather page for camp "+camp.campName);
+				ok=false;
 			}
 			}catch(Exception e)
 			{
 				System.err.println("t8: didnt found weather page for camp "+camp.campName);
+				ok=false;
 			}
 			
 			try{
@@ -344,10 +397,12 @@ public class FirstClass {
 			if (!camp.isItContactUs())
 			{
 				System.err.println("t8: didnt found contact us page for camp "+camp.campName);
+				ok=false;
 			}
 			}catch(Exception e)
 			{
 				System.err.println("t8: didnt found contact us page for camp "+camp.campName);
+				ok=false;
 			}
 			
 			try{
@@ -355,15 +410,18 @@ public class FirstClass {
 			if (!camp.isItGuidelines())
 			{
 				System.err.println("t8: didnt found Guidelines page for camp "+camp.campName);
+				ok=false;
 			}
 			}catch(Exception e)
 			{
 				System.err.println("t8: didnt found Guidelines page for camp "+camp.campName);
+				ok=false;
 			}
 
 			main=camp.backToMain();
 		}
 		main.close();
+		assertEquals(ok,true);
 	}
 	
 			//start 16.03.09 9:10
@@ -377,8 +435,10 @@ public class FirstClass {
 		 * Verify that the popup is present with the pictures 
 		 * Verify to all other campgrounds also
 		 */
-	public static void t9()
+	@Test
+	public void t9()
 	{
+		boolean ok=true;
 		MainPage main=new MainPage();
 		main.scrollDown();
 		CampPage camp;
@@ -394,6 +454,7 @@ public class FirstClass {
 				if (!camp.isItCampsitesPage())
 				{
 					System.err.println("t9: didnt found campsite on campsites page for camp "+camp.campName);
+					ok=false;
 				}
 				else
 				{
@@ -403,33 +464,23 @@ public class FirstClass {
 						if (!camp.isItPopUp())
 						{
 							System.err.println("t8: didnt found popup for the first campsite on campsites page for camp "+camp.campName);
+							ok=false;
 						}
 					}catch(Exception e)
 					{
 						System.err.println("t9: didnt found first camp on campsites page for camp "+camp.campName);
+						ok=false;
 					}
 					
 				}
 			}catch(Exception e)
 			{
 				System.err.println("t9: didnt found campsites page for camp "+camp.campName);
+				ok=false;
 			}
 			main=camp.backToMain();
 		}
 		main.close();
-	}
-	
-	public static void main(String[] args)
-	{
-		/*t1();
-		t2();
-		t3();
-		t4();
-		t5();
-		t6();
-		t7();
-		t8();*/
-		t9();
-		
+		assertEquals(ok,true);
 	}
 }
