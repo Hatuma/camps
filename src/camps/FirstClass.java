@@ -107,6 +107,7 @@ public class FirstClass {
 		boolean ok=true;
 		MainPage main=new MainPage();
 		ReservationPage rp=main.openReservation();	
+		rp.gotInIFrame();
 		rp.setStartDate(new Date(2016, 1, 1));
 		rp.setEndDate(new Date(2016, 10, 1));
 		rp.submitSearch();
@@ -141,6 +142,7 @@ public class FirstClass {
 			System.err.println("t3:camp Chehalis River not found!");
 			ok=false;
 		}
+		rp.quitIFrame();
 		rp.close();
 		assertEquals(ok,true);
 	}
@@ -481,6 +483,63 @@ public class FirstClass {
 			main=camp.backToMain();
 		}
 		main.close();
+		assertEquals(ok,true);
+	}
+	
+				//start 16.03.10 8:35
+				//finished 16.03.11 8:21
+				//active programming time 3:00
+			/* Go to westharrisonreservations.com
+			 * Go to Make A Reservation page
+			 * Select any campground
+			 * Select any from date and end date for reservation
+			 * Select any campsite
+			 * verify:
+			 * 		the selected campsite is in the shopping cart
+			 * 		the name of the campground
+			 * 		the name of the campsite
+			 * 		the presence of the Change and Remove button
+			 * Click on remove button
+			 * Verify that the shopping cart is empty
+			 */
+	@Test
+	public void t10()
+	{
+		MainPage main=new MainPage();
+		boolean ok=true;
+		ReservationPage rpage=main.openReservation();
+		rpage.gotInIFrame();
+		rpage.viewProducts();
+		String camp=rpage.choseRandomCamp();
+		String campsite=rpage.choseAFreeInterval();
+		rpage.nextButton();
+		sleep(2000);
+		ok&=rpage.getFirstCampNameFromCart().contains(camp);
+		if(!ok)
+		{
+			System.err.println("t10: wrong camp name");
+		}
+		if(!rpage.checkCampsite(campsite))
+		{
+			System.err.println("t10: campsite name: "+campsite+" not found");
+			ok=false;
+		}
+		if (rpage.checkChangeAndRemove())
+		{
+			rpage.removeCamp();
+			if (!rpage.isCartEmpty())
+			{
+				System.err.println("t10: the cart is not empty!");
+				ok=false;
+			}
+		}
+		else
+		{
+			System.err.println("t10: change or remove button not found");
+			ok=false;
+		}		
+		rpage.quitIFrame();
+		rpage.close();
 		assertEquals(ok,true);
 	}
 }
