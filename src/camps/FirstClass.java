@@ -542,4 +542,75 @@ public class FirstClass {
 		rpage.close();
 		assertEquals(ok,true);
 	}
+	
+			//start 16.03.11 8:30
+			//finished 16.03.11 
+			//active programming time 
+		/* Go to westharrisonreservations.com
+		 * Go to Make A Reservation page
+		 * Select any campground
+		 * Select any from date and end date for reservation
+		 * Select any campsite
+		 * verify:
+		 * 		the selected campsite is in the shopping cart
+		 * 		the name of the campground
+		 * 		the name of the campsite
+		 * 		the presence of the Change and Remove button
+		 *  Click on Continue Shopping
+		 *  Repeat steps 3,4,5,6
+		 *  Remove the first entry from the shopping cart
+		 *  Verify that the item has been removed
+		 *  Remove the rest items from shopping cart
+		 *  Verify that the shopping cart is empty
+		 */
+		@Test
+		public void t11()
+		{
+			int n=3;
+			MainPage main=new MainPage();
+			boolean ok=true;
+			ReservationPage rpage=main.openReservation();
+			rpage.gotInIFrame();
+			rpage.viewProducts();
+			String[] camps=new String[n];
+			for (int i=0; i<n;i++)
+			{
+				camps[i]=rpage.choseRandomCamp();
+				String campsite=rpage.choseAFreeInterval();
+				rpage.nextButton();
+				sleep(2000);
+				if(!rpage.isCampInCart(camps[i]))
+				{
+					System.err.println("t11: wrong camp name");
+					ok=false;
+				}
+				if(!rpage.checkCampsite(campsite))
+				{
+					System.err.println("t11: campsite name: "+campsite+" not found");
+					ok=false;
+				}
+				if (!rpage.checkChangeAndRemove())
+				{
+					System.err.println("t11: change or remove button not found");
+					ok=false;
+				}	
+				if(i<n-1)
+				{
+					rpage.continueShopping();
+				}
+			}
+			for(int i=0;i<n;i++)
+			{
+				rpage.removeCamp();
+				if(rpage.isCampInCart(camps[i]))
+				{
+					System.err.println("t11: camp haven't been removed: "+camps[i]);
+					ok=false;
+				}
+				
+			}
+			rpage.quitIFrame();
+			rpage.close();
+			assertEquals(ok,true);
+		}
 }

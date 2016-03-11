@@ -121,13 +121,12 @@ public class ReservationPage {
 	{
 		List<WebElement> list=driver.findElements(By.className("av"));
 		boolean ok=false;
-		String campsite;
 		int i=0;
 		int j=0;
 		int count=0;
 		while(!ok&&count<10)
 		{
-			i=(int)(Math.random()*(list.size()-2));
+			i=0;//i=(int)(Math.random()*(list.size()-2));
 			int iday=Integer.parseInt(list.get(i).getText());
 			j=i;
 			while (j<i+7&&j<list.size()-2&&Integer.parseInt(list.get(j+1).getText())==iday-i+j+1)
@@ -168,6 +167,26 @@ public class ReservationPage {
 		return driver.findElement(By.xpath("//div[@class='desc']/b")).getText();
 	}
 	
+	public List<String> getCampNamesFromCart()
+	{
+		List<String> res=new ArrayList<>();
+		for(WebElement desc:driver.findElements(By.xpath("//div[@class='desc']/b")))
+		{
+			res.add(desc.getText());
+		}
+		return res;
+	}
+	
+	public boolean isCampInCart(String camp)
+	{
+		for(String s:getCampNamesFromCart())
+		{
+			if (s.contains(camp))
+				return true;
+		}
+		return false;
+	}
+	
 	public boolean checkCampsite(String s)
 	{
 		if (s==null)
@@ -179,7 +198,6 @@ public class ReservationPage {
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
 			return false;
 		}
 	}
@@ -218,5 +236,10 @@ public class ReservationPage {
 			ok=false;
 		}
 		return ok;
+	}
+	
+	public void continueShopping()
+	{
+		driver.findElement(By.xpath("//button[text()[contains(.,'Continue Shopping')]]")).click();;
 	}
 }
